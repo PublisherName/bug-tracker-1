@@ -5,7 +5,9 @@ import Dashboard from './Views/Dashboard/Dashboard.jsx';
 import Navbar from './Views/NavBar/NavBar.jsx';
 import Footer from "./Views/Footer/Footer.jsx";
 
-function App() {
+import BugPage from "./Views/BugPage/BugPage.jsx";
+
+function App() {  
   return (
     <>
       <BrowserRouter>
@@ -13,6 +15,7 @@ function App() {
         <Routes>
           <Route index element={<Dashboard />} />
           <Route path="/buglist" element={<BugList />} />
+          <Route path="/bug/:id" element={<BugPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -1,0 +1,35 @@
+.bug-page {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.bug-details {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.bug-details h2 {
+    color: #3498db;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.bug-details p {
+    margin: 0 0 15px;
+    line-height: 1.6;
+}
+
+.error{
+    color: red;
+    font-size: 20px;
+    margin-top: 50px;
+    text-align: center;
+}

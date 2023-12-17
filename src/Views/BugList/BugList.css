@@ -37,7 +37,8 @@ td.priority-high {
 }
 
 .edit,
-.delete {
+.delete,
+.view {
     background-color: #3498db;
     color: #ecf0f1;
     padding: 5px 10px;

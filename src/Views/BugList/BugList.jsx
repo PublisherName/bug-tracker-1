@@ -35,6 +35,7 @@ function BugList() {
         if (index !== -1) {
             if (action === 'delete') {
                 setData([...data.slice(0, index), ...data.slice(index + 1)]);
+                localStorage.removeItem(`comments-${id}`);
             } else if (action === 'edit') {
                 setEditIndex(index);
                 setCurrentItem(data[index]);

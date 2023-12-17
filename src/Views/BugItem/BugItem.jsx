@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 function BugItem({ id, item, modifyItem }) {
     function capitalizeFirstLetter(words) {
         const separateWord = words.toLowerCase().split(' ');
@@ -18,6 +20,7 @@ function BugItem({ id, item, modifyItem }) {
             <td className={`priority-${item.priority.toLowerCase().replace(' ', '-')}`}>{capitalizeFirstLetter(item.priority)}</td>
             <td>{capitalizeFirstLetter(item.status)}</td>
             <td>
+            <Link to={`/bug/${item.id}`} className='view'><i className="fas fa-eye"></i></Link>
                 <a href="#" onClick={() => modifyItem(item.id, 'edit')} className="edit"><i className="fas fa-edit"></i></a>
                 <a href="#" onClick={() => modifyItem(item.id, 'delete')} className="delete"><i className="fas fa-trash-alt"></i></a>
             </td>
