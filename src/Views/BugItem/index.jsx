@@ -1,19 +1,18 @@
 
 import React from 'react';
-import Button from '../Button/Button.jsx';
 
-function BugItem({ item, index, editItem, deleteItem }) {
+function BugItem({ id, item, editItem, deleteItem }) {
     return (
-        <tr key={index}>
-            <td>{index + 1} </td>
+        <tr key={id}>
+            <td>{item.id} </td>
             <td>{item.project}</td>
             <td>{item.title}</td>
             <td>{item.description}</td>
             <td>{item.priority}</td>
             <td>{item.status}</td>
             <td>
-                <a href="#" onClick={() => editItem(index)} class="edit"><i class="fas fa-edit"></i></a>
-                <a href="#" onClick={() => deleteItem(index)} class="delete"><i class="fas fa-trash-alt"></i></a>
+                <a href="#" onClick={() => editItem(item.id)} className="edit"><i className="fas fa-edit"></i></a>
+                <a href="#" onClick={() => deleteItem(item.id)} className="delete"><i className="fas fa-trash-alt"></i></a>
             </td>
         </tr>
     );

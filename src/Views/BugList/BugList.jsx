@@ -40,16 +40,22 @@ function BugList() {
         setIsOpen(false);
     }
 
-    const deleteItem = (index) => {
-        let newData = [...data];
-        newData.splice(index, 1);
-        setData(newData);
+    const deleteItem = (id) => {
+        const index = data.findIndex(item => item.id === id);
+        if (index !== -1) {
+            let newData = [...data];
+            newData.splice(index, 1);
+            setData(newData);
+        }
     };
 
-    const editItem = (index) => {
-        setEditIndex(index);
-        setCurrentItem(data[index]);
-        toggleModal('edit');
+    const editItem = (id) => {
+        const index = data.findIndex(item => item.id === id);
+        if (index !== -1) {
+            setEditIndex(index);
+            setCurrentItem(data[index]);
+            toggleModal('edit');
+        }
     };
 
     return (
@@ -79,7 +85,7 @@ function BugList() {
                     </tr>
                 ) : (
                     data.map((item, index) => (
-                        <BugItem item={item} index={index} editItem={editItem} deleteItem={deleteItem} submitData={onAddSuccess} />
+                        <BugItem key = {item.id} item={item} editItem={editItem} deleteItem={deleteItem} submitData={onAddSuccess} />
                     ))
                 )}
                 </tbody>

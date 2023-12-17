@@ -9,12 +9,14 @@ function InputForm(props) {
   } = props
 
   const initialFormState = currentItem ? {
+    id: currentItem.id,
     project: currentItem.project,
     title: currentItem.title,
     description: currentItem.description,
     priority: currentItem.priority,
     status: currentItem.status
   } : {
+    id: Date.now(),
     project: '',
     title: '',
     description: '',
@@ -47,6 +49,11 @@ function InputForm(props) {
       setFormState({ ...formState, errors });
       return;
     }
+    
+    if (!formState.id) {
+      formState.id = Date.now();
+    }
+    
     onAddSuccess(formState);
   };
 
