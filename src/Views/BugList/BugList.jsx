@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '../Modal/Modal.jsx';
-import BugItem from '../BugItem/index.jsx';
+import BugItem from '../BugItem/BugItem.jsx';
 import SearchBar from '../SearchBar/SearchBar.jsx';
 import './BugList.css'
 
