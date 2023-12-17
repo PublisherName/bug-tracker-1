@@ -13,6 +13,8 @@ function BugList() {
     const [isOpen, setIsOpen] = useState(false);
     const [editIndex, setEditIndex] = useState(null);
     const [currentItem, setCurrentItem] = useState(null);
+    const [filterStatus, setFilterStatus] = useState('all');
+    const [filterPriority, setFilterPriority] = useState('all');
 
     useEffect(() => {
         localStorage.setItem('formData', JSON.stringify(data));
@@ -40,10 +42,22 @@ function BugList() {
         }
     };
 
+    const handleFilterChange = (name, value) => {
+        if (name === 'status') {
+            setFilterStatus(value);
+        } else if (name === 'priority') {
+            setFilterPriority(value);
+        }
+    };
+
+    const filteredData = data.filter(item => {
+        return (filterStatus === 'all' || item.status === filterStatus) && (filterPriority === 'all' || item.priority === filterPriority);
+    });
+
     return (
         <>
             <section className='section-buglist'>
-            <SearchBar />
+            <SearchBar onFilterChange={handleFilterChange} />
             <div className="add-bug-btn" onClick={toggleModal}>
                 <i className="fas fa-plus"></i> Add Bug
             </div>
@@ -61,12 +75,12 @@ function BugList() {
                     </tr>
                 </thead>
                 <tbody>
-                {data.length === 0 ? (
+                {filteredData.length === 0 ? (
                     <tr>
                         <td colSpan="7" className="center-text">No record found.</td>
                     </tr>
                 ) : (
-                    data.map((item) => (
+                    filteredData.map((item) => (
                         <BugItem key = {item.id} item={item} modifyItem={modifyItem} submitData={onAddSuccess} />
                     ))
                 )}
