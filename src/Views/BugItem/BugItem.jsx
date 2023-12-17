@@ -2,8 +2,8 @@ function BugItem({ id, item, modifyItem }) {
     return (
         <tr key={id}>
             <td>{item.id} </td>
-            <td>{item.project}</td>
             <td>{item.title}</td>
+            <td>{item.project}</td>
             <td>{item.description}</td>
             <td>{item.priority}</td>
             <td>{item.status}</td>

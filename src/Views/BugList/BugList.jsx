@@ -15,6 +15,7 @@ function BugList() {
     const [currentItem, setCurrentItem] = useState(null);
     const [filterStatus, setFilterStatus] = useState('all');
     const [filterPriority, setFilterPriority] = useState('all');
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
         localStorage.setItem('formData', JSON.stringify(data));
@@ -47,45 +48,49 @@ function BugList() {
             setFilterStatus(value);
         } else if (name === 'priority') {
             setFilterPriority(value);
+        } else if (name === 'searchText') {
+            setSearchText(value);
         }
     };
 
     const filteredData = data.filter(item => {
-        return (filterStatus === 'all' || item.status === filterStatus) && (filterPriority === 'all' || item.priority === filterPriority);
+        return (filterStatus === 'all' || item.status === filterStatus)
+            && (filterPriority === 'all' || item.priority === filterPriority)
+            && (item.title.toLowerCase().includes(searchText.toLowerCase()));
     });
 
     return (
         <>
             <section className='section-buglist'>
-            <SearchBar onFilterChange={handleFilterChange} />
-            <div className="add-bug-btn" onClick={toggleModal}>
-                <i className="fas fa-plus"></i> Add Bug
-            </div>
-            <Modal isOpen={isOpen} closeModal={toggleModal} submitData={onAddSuccess} currentItem={currentItem} />
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Project</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Priority</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {filteredData.length === 0 ? (
-                    <tr>
-                        <td colSpan="7" className="center-text">No record found.</td>
-                    </tr>
-                ) : (
-                    filteredData.map((item) => (
-                        <BugItem key = {item.id} item={item} modifyItem={modifyItem} submitData={onAddSuccess} />
-                    ))
-                )}
-                </tbody>
-            </table>
+                <SearchBar onFilterChange={handleFilterChange} searchText={searchText} />
+                <div className="add-bug-btn" onClick={toggleModal}>
+                    <i className="fas fa-plus"></i> Add Bug
+                </div>
+                <Modal isOpen={isOpen} closeModal={toggleModal} submitData={onAddSuccess} currentItem={currentItem} />
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Project</th>
+                            <th>Description</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredData.length === 0 ? (
+                            <tr>
+                                <td colSpan="7" className="center-text">No record found.</td>
+                            </tr>
+                        ) : (
+                            filteredData.map((item) => (
+                                <BugItem key={item.id} item={item} modifyItem={modifyItem} submitData={onAddSuccess} />
+                            ))
+                        )}
+                    </tbody>
+                </table>
             </section>
         </>
     );

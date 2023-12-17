@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './SearchBar.css';
 
-function SearchBar({ onFilterChange }) {
+function SearchBar({ onFilterChange, searchText }) {
     const handleFilterChange = (event) => {
         onFilterChange(event.target.name, event.target.value);
+    };
+
+    const handleSearchChange = (event) => {
+        onFilterChange('searchText', event.target.value);
     };
 
     return (
@@ -25,8 +29,7 @@ function SearchBar({ onFilterChange }) {
                 </select>
             </div>
 
-            <input type="text" id="searchText" className="search-input" placeholder="Search..."/>
-            <button className="search-btn">Search</button>
+            <input type="text" id="searchText" className="search-input" placeholder="Search..." value={searchText} onChange={handleSearchChange} />
         </div>
     );
 }
