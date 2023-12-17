@@ -1,34 +1,43 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import { Chart as Chartjs } from "chart.js/auto";
+import { Pie } from "react-chartjs-2";
 import Badge from '../Badge/Badge';
+import './Dashboard.css';
 
-import './Dashboard.css'
-
-function Dashboard() {
-
+const Dashboard = () => {
     const [bugs, setBugs] = useState([]);
 
     useEffect(() => {
         const localStorageData = localStorage.getItem('formData');
         if (localStorageData) {
-            const parsedData = JSON.parse(localStorageData);
-            setBugs(parsedData);
+            setBugs(JSON.parse(localStorageData));
         }
     }, []);
 
-    const activeBugs = bugs.reduce((count, bug) => bug.status === 'open' ? count + 1 : count, 0);
-    const closedBugs = bugs.reduce((count, bug) => bug.status === 'closed' ? count + 1 : count, 0);
-    const inProgressBugs = bugs.reduce((count, bug) => bug.status === 'in progress' ? count + 1 : count, 0);
+    const bugCounts = bugs.reduce((counts, bug) => {
+        counts[bug.status]++;
+        return counts;
+    }, { open: 0, 'in progress': 0, closed: 0 });
 
+    const data = {
+        labels: ["Open", "InProgress", "Complete"],
+        datasets: [{
+            label: "No of Bugs",
+            data: Object.values(bugCounts),
+        }],
+    };
 
     return (
-        <>
-            <section className="dashboard">
-                <Badge icon="fas fa-bug" text="Active Bugs" count={activeBugs} />
-                <Badge icon="fas fa-spinner" text="Running Bugs" count={inProgressBugs} />
-                <Badge icon="fas fa-check-circle" text="Completed Bugs" count={closedBugs} />
-            </section>
-        </>
-    )
+        <section className="dashboard">
+                <Badge icon="fas fa-bug" text="Active Bugs" count={bugCounts.open} />
+                <Badge icon="fas fa-spinner" text="Running Bugs" count={bugCounts['in progress']} />
+                <Badge icon="fas fa-check-circle" text="Completed Bugs" count={bugCounts.closed} />
+            
+            <div className="pie-chart">
+                <Pie data={data} options={{ responsive: true, maintainAspectRatio: false }} />
+            </div>
+        </section>
+    );
 }
 
-export default Dashboard
+export default Dashboard;
