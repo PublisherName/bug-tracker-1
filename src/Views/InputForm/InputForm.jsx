@@ -20,36 +20,46 @@ function InputForm({ onAddSuccess, currentItem }) {
 
   const [formState, setFormState] = useState(initialFormState);
 
+  const generateErrors = (formState) => ({
+    title: formState.title ? '' : 'Title is required',
+    project: formState.project ? '' : 'Project is required',
+    description: formState.description ? '' : 'Description is required',
+    priority: formState.priority ? '' : 'Priority is required',
+    status: formState.status ? '' : 'Status is required'
+  });
+
   const handleInputChange = (event) => {
-    setFormState({ ...formState, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    setFormState(prevState => {
+      const newState = {
+        ...prevState,
+        [name]: value,
+      };
+      newState.errors = generateErrors(newState);
+      return newState;
+    });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const errors = {
-      title: formState.title ? '' : 'Title is required',
-      project: formState.project ? '' : 'Project is required',
-      description: formState.description ? '' : 'Description is required',
-      priority: formState.priority ? '' : 'Priority is required',
-      status: formState.status ? '' : 'Status is required'
-    };
-
+  
+    const errors = generateErrors(formState);
+  
     if (Object.values(errors).some(error => error)) {
       setFormState({ ...formState, errors });
       return;
     }
-
+  
     if (!formState.id) {
       formState.id = Date.now();
     }
-
+  
     const formStateWithoutErrors = { ...formState };
     delete formStateWithoutErrors.errors;
-
+  
     onAddSuccess(formStateWithoutErrors);
   };
-
+  
   const renderInputField = (key) => {
     if (key === 'id' && currentItem) {
       return null;
