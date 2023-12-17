@@ -1,0 +1,24 @@
+ .popup-button {
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #427D9D;
+    color: black;
+    cursor: pointer;
+ }      
+
+
+button:hover {
+    background-color:#DDF2FD;
+}
+
+.popup-input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
