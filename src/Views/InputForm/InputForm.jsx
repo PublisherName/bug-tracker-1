@@ -1,22 +1,8 @@
 import './InputForm.css';
 import React, { useState } from "react";
 
-function InputForm(props) {
-
-  const {
-    onAddSuccess,
-    currentItem
-  } = props
-
-  const initialFormState = currentItem ? {
-    id: currentItem.id,
-    project: currentItem.project,
-    title: currentItem.title,
-    description: currentItem.description,
-    priority: currentItem.priority,
-    status: currentItem.status
-  } : {
-    id: Date.now(),
+function InputForm({ onAddSuccess, currentItem }) {
+  const initialFormState = currentItem ? { ...currentItem } : {
     project: '',
     title: '',
     description: '',
@@ -34,6 +20,10 @@ function InputForm(props) {
 
   const [formState, setFormState] = useState(initialFormState);
 
+  const handleInputChange = (event) => {
+    setFormState({ ...formState, [event.target.name]: event.target.value });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -49,63 +39,50 @@ function InputForm(props) {
       setFormState({ ...formState, errors });
       return;
     }
-    
+
     if (!formState.id) {
       formState.id = Date.now();
     }
-    
+
     onAddSuccess(formState);
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit} className='modal'>
-        <label>
-          Project:
-          <input
-            type="text"
-            value={formState.project}
-            onChange={e => setFormState({ ...formState, project: e.target.value })}
-          />
-          {formState.errors.project && <p>{formState.errors.project}</p>}
-        </label>
-        <label>
-          Bug Title:
-          <input
-            type="text"
-            value={formState.title}
-            onChange={e => setFormState({ ...formState, title: e.target.value })}
-          />
-          {formState.errors.title && <p>{formState.errors.title}</p>}
-        </label>
-        <label>
-          Description
-          <textarea
-            value={formState.description}
-            onChange={e => setFormState({ ...formState, description: e.target.value })}
-          />
-          {formState.errors.description && <p>{formState.errors.description}</p>}
-        </label>
-        <label>
-          Priority
-          <select value={formState.priority} onChange={e => setFormState({ ...formState, priority: e.target.value })}>
-            <option value="">-----</option>
-            <option value="High">High</option>
-            <option value="Medium">Medium</option>
-            <option value="Low">Low</option>
-          </select>
-          {formState.errors.priority && <p>{formState.errors.priority}</p>}
-        </label>
-        <label>
-          status:
-          <select value={formState.status} onChange={e => setFormState({ ...formState, status: e.target.value })}>
-            <option value="">-----</option>
-            <option value="Ongoing">Ongoing</option>
-            <option value="Assigned">Assigned</option>
-            <option value="Completed">Completed</option>
-          </select>
-          {formState.errors.status && <p>{formState.errors.status}</p>}
-        </label>
+        {Object.keys(initialFormState).map((key) => {
+          if (key === 'id' && currentItem) {
+            return null;
+          }
+          return key !== 'errors' && (
+            <label key={key}>
+              {key.charAt(0).toUpperCase() + key.slice(1)}
+              {key === 'priority' ? (
+                <select name={key} value={formState[key]} onChange={handleInputChange}>
+                  <option value="">Select priority</option>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              ) : key === 'status' ? (
+                <select name={key} value={formState[key]} onChange={handleInputChange}>
+                  <option value="">Select status</option>
+                  <option value="open">Open</option>
+                  <option value="in progress">In Progress</option>
+                  <option value="closed">Closed</option>
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  name={key}
+                  value={formState[key]}
+                  onChange={handleInputChange}
+                />
+              )}
+              {formState.errors[key] && <p>{formState.errors[key]}</p>}
+            </label>
+          );
+        })}
         <input type="submit" value="Submit" />
       </form>
     </div>

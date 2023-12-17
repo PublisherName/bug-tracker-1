@@ -1,7 +1,4 @@
-
-import React from 'react';
-
-function BugItem({ id, item, editItem, deleteItem }) {
+function BugItem({ id, item, modifyItem }) {
     return (
         <tr key={id}>
             <td>{item.id} </td>
@@ -11,8 +8,8 @@ function BugItem({ id, item, editItem, deleteItem }) {
             <td>{item.priority}</td>
             <td>{item.status}</td>
             <td>
-                <a href="#" onClick={() => editItem(item.id)} className="edit"><i className="fas fa-edit"></i></a>
-                <a href="#" onClick={() => deleteItem(item.id)} className="delete"><i className="fas fa-trash-alt"></i></a>
+                <a href="#" onClick={() => modifyItem(item.id, 'edit')} className="edit"><i className="fas fa-edit"></i></a>
+                <a href="#" onClick={() => modifyItem(item.id, 'delete')} className="delete"><i className="fas fa-trash-alt"></i></a>
             </td>
         </tr>
     );

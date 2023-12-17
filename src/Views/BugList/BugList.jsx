@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Modal from '../Modal/Modal.jsx';
 import BugItem from '../BugItem/index.jsx';
 import SearchBar from '../SearchBar/SearchBar.jsx';
-
 import './BugList.css'
 
 function BugList() {
@@ -19,42 +18,25 @@ function BugList() {
         localStorage.setItem('formData', JSON.stringify(data));
     }, [data]);
 
-    const toggleModal = (action) => {
-        setIsOpen(!isOpen);
-        if (action !== 'edit') {
-            setEditIndex(null);
-            setCurrentItem(null);
-        }
-    };
+    const toggleModal = () => setIsOpen(!isOpen);
 
     const onAddSuccess = (arg) => {
-        if (editIndex !== null) {
-            let newData = [...data];
-            newData[editIndex] = arg;
-            setData(newData);
-            setEditIndex(null);
-            setCurrentItem(null);
-        } else {
-            setData((oldValues) => [...oldValues, arg]);
-        }
+        setData(editIndex !== null ? [...data.slice(0, editIndex), arg, ...data.slice(editIndex + 1)] : [...data, arg]);
+        setEditIndex(null);
+        setCurrentItem(null);
         setIsOpen(false);
     }
 
-    const deleteItem = (id) => {
+    const modifyItem = (id, action) => {
         const index = data.findIndex(item => item.id === id);
         if (index !== -1) {
-            let newData = [...data];
-            newData.splice(index, 1);
-            setData(newData);
-        }
-    };
-
-    const editItem = (id) => {
-        const index = data.findIndex(item => item.id === id);
-        if (index !== -1) {
-            setEditIndex(index);
-            setCurrentItem(data[index]);
-            toggleModal('edit');
+            if (action === 'delete') {
+                setData([...data.slice(0, index), ...data.slice(index + 1)]);
+            } else if (action === 'edit') {
+                setEditIndex(index);
+                setCurrentItem(data[index]);
+                toggleModal();
+            }
         }
     };
 
@@ -84,8 +66,8 @@ function BugList() {
                         <td colSpan="7" className="center-text">No record found.</td>
                     </tr>
                 ) : (
-                    data.map((item, index) => (
-                        <BugItem key = {item.id} item={item} editItem={editItem} deleteItem={deleteItem} submitData={onAddSuccess} />
+                    data.map((item) => (
+                        <BugItem key = {item.id} item={item} modifyItem={modifyItem} submitData={onAddSuccess} />
                     ))
                 )}
                 </tbody>
