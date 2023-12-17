@@ -21,7 +21,13 @@ function BugList() {
         localStorage.setItem('formData', JSON.stringify(data));
     }, [data]);
 
-    const toggleModal = () => setIsOpen(!isOpen);
+    const toggleModal = (action) => {
+        setIsOpen(!isOpen);
+        if (action !== 'edit') {
+            setEditIndex(null);
+            setCurrentItem(null);
+          }
+    };
 
     const onAddSuccess = (arg) => {
         setData(editIndex !== null ? [...data.slice(0, editIndex), arg, ...data.slice(editIndex + 1)] : [...data, arg]);
@@ -39,7 +45,7 @@ function BugList() {
             } else if (action === 'edit') {
                 setEditIndex(index);
                 setCurrentItem(data[index]);
-                toggleModal();
+                toggleModal('edit');
             }
         }
     };

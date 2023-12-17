@@ -1,5 +1,5 @@
 import './InputForm.css';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function InputForm({ onAddSuccess, currentItem }) {
   const initialFormState = currentItem ? { ...currentItem } : {
@@ -19,6 +19,13 @@ function InputForm({ onAddSuccess, currentItem }) {
   };
 
   const [formState, setFormState] = useState(initialFormState);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (currentItem) {
+      setIsSubmitted(true);
+    }
+  }, [currentItem]);
 
   const generateErrors = (formState) => ({
     title: formState.title ? '' : 'Title is required',
@@ -42,6 +49,7 @@ function InputForm({ onAddSuccess, currentItem }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setIsSubmitted(true);
   
     const errors = generateErrors(formState);
   
@@ -89,7 +97,7 @@ function InputForm({ onAddSuccess, currentItem }) {
         ) : (
           <input type="text" name={key} value={formState[key]} onChange={handleInputChange} />
         )}
-        {formState.errors[key] && <p>{formState.errors[key]}</p>}
+        {isSubmitted && formState.errors[key] && <p>{formState.errors[key]}</p>}
       </label>
     );
   };
