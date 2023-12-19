@@ -8,8 +8,8 @@ The Bug Tracker Dashboard is a web application developed using Vite and React, d
 
 To install the project, follow these steps:
 
-1. Clone the repository: `https://github.com/PublisherName/bug-tracker-1.git`
-2. Navigate into the directory: `cd bug-tracker-1`
+1. Clone the repository: `https://github.com/PublisherName/js-bug-tracker.git`
+2. Navigate into the directory: `cd js-bug-tracker`
 3. Install dependencies: `npm install`
 
 ## Key Features:
